@@ -700,42 +700,122 @@ A segurança passa a fazer parte do ciclo de desenvolvimento em vez de ser trata
 
 # 18. Evidências da Sprint
 
-As seguintes evidências foram produzidas durante a implementação e validação:
+Esta seção consolida as principais evidências obtidas durante a implementação e validação dos controles de segurança da Sprint 3.
 
-1. Maven `BUILD SUCCESS`;
-2. 16 testes automatizados aprovados;
-3. containers Docker ativos;
-4. API em estado `HEALTHY`;
-5. PostgreSQL em estado `HEALTHY`;
-6. Actuator Health;
-7. métricas do Actuator;
-8. Prometheus Target `UP`;
-9. `up{job="fordcare-api"} = 1`;
-10. dashboard Grafana;
-11. métricas de CPU;
-12. métricas de memória;
-13. métricas HTTP;
-14. latência p95;
-15. WARN/ERROR;
-16. regras de alerta do Prometheus;
-17. backup executado;
-18. arquivo de backup gerado;
-19. restore realizado;
-20. tabelas recuperadas;
-21. GitHub Actions executado;
-22. Semgrep aprovado;
-23. Dependency-Check aprovado;
-24. Gitleaks aprovado;
-25. Trivy aprovado;
-26. Security Gate aprovado;
-27. workflow completo com status `Success`;
-28. Expo Doctor executado com `18/18 checks passed`;
-29. ESLint do frontend executado com `0 errors`;
-30. frontend executado localmente e integrado à API;
-31. autenticação JWT validada entre frontend e backend;
-32. armazenamento seguro de token configurado com Expo SecureStore para plataformas nativas;
-33. `.env` excluído do versionamento;
-34. busca por credenciais hardcoded no frontend sem identificação de secrets privados.
+## 18.1 Pipeline DevSecOps
+
+A execução final do GitHub Actions foi concluída com sucesso em todos os jobs obrigatórios:
+
+- Build e Testes;
+- SAST — Semgrep;
+- SCA — OWASP Dependency-Check;
+- Secret Scanning — Gitleaks;
+- Container Security — Trivy;
+- Security Gate.
+
+![Pipeline DevSecOps aprovado](./evidencias/pipeline-success.png)
+
+---
+
+## 18.2 Testes automatizados
+
+O backend foi validado com 16 testes automatizados:
+
+- 16 testes executados;
+- 0 failures;
+- 0 errors;
+- BUILD SUCCESS.
+
+![Testes automatizados](./evidencias/maven-tests.png)
+
+---
+
+## 18.3 Prometheus
+
+O Prometheus identificou corretamente a API como disponível.
+
+Target:
+
+`fordcare-api — UP`
+
+![Prometheus Target UP](./evidencias/prometheus-target.png)
+
+A consulta:
+
+`up{job="fordcare-api"}`
+
+retornou:
+
+`1`
+
+![Prometheus Query](./evidencias/prometheus-query.png)
+
+---
+
+## 18.4 Dashboard de Observabilidade
+
+O Grafana foi configurado com o dashboard:
+
+**FordCare Intelligence — Security & Observability**
+
+O dashboard permite acompanhar métricas relacionadas à aplicação e à infraestrutura.
+
+![Dashboard Grafana](./evidencias/grafana-dashboard.png)
+
+---
+
+## 18.5 Alertas
+
+Foram configuradas regras de alerta para:
+
+- indisponibilidade da API;
+- crescimento da taxa de erros HTTP 5xx;
+- utilização elevada de memória JVM.
+
+![Alertas Prometheus](./evidencias/prometheus-alerts.png)
+
+---
+
+## 18.6 Logs e Auditoria
+
+Foram implementados registros para eventos relevantes de segurança, incluindo:
+
+- LOGIN_SUCCESS;
+- LOGIN_FAILED;
+- UNAUTHORIZED_ACCESS;
+- ACCESS_DENIED;
+- RATE_LIMIT_EXCEEDED;
+- CUSTOMER_ANONYMIZED.
+
+![Logs de auditoria](./evidencias/audit-logs.png)
+
+---
+
+## 18.7 Backup e Recuperação
+
+Foi realizado backup real do PostgreSQL e posteriormente executado um teste de restauração em banco isolado.
+
+A recuperação confirmou a presença das 10 tabelas esperadas.
+
+![Backup executado](./evidencias/backup.png)
+
+![Restore validado](./evidencias/restore.png)
+
+---
+
+## 18.8 Segurança do Frontend
+
+O frontend foi validado utilizando Expo Doctor:
+
+`18/18 checks passed. No issues detected!`
+
+Também foi executado ESLint com:
+
+`0 errors`
+
+A busca por credenciais hardcoded não identificou secrets privados no código-fonte.
+
+![Expo Doctor](./evidencias/expo-doctor.png)
 
 ---
 
