@@ -40,5 +40,4 @@ Thumbs.db
 
 # Database backups
 backups/
-*.sql
 *.dump
